@@ -12,9 +12,9 @@ class FileDetailDialog extends StatelessWidget {
   final AttachedFile file;
 
   const FileDetailDialog({
-    Key? key,
+    super.key,
     required this.file,
-  }) : super(key: key);
+  });
 
   String _formatFileSize(int bytes) {
     const suffixes = ['B', 'KB', 'MB', 'GB', 'TB'];

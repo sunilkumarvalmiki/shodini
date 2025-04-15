@@ -9,7 +9,7 @@ class RouteGuards {
   static String? authGuard(BuildContext context, GoRouterState state) {
     // This would normally check an auth service or provider
     // Here we're using a simple check for demonstration
-    final bool isAuthenticated = false; // Replace with actual auth check
+    const bool isAuthenticated = false; // Replace with actual auth check
 
     // List of routes that are allowed without authentication
     final List<String> publicRoutes = [
@@ -39,7 +39,7 @@ class RouteGuards {
   static String? featureGuard(BuildContext context, GoRouterState state) {
     // This would check if the user has access to certain features
     // For example, premium features may be locked for free users
-    final bool hasPremiumAccess = false; // Replace with actual check
+    const bool hasPremiumAccess = false; // Replace with actual check
 
     // Define feature-restricted routes
     final List<String> premiumRoutes = [

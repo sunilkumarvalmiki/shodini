@@ -202,8 +202,7 @@ class AttachedFile {
       if (!kIsWeb && path.isNotEmpty) {
         final file = File(path);
         if (await file.exists()) {
-          // Use compute to move loading to background
-          bytes = await File(path).readAsBytes();
+          bytes = await file.readAsBytes();
         }
       }
     } catch (e) {

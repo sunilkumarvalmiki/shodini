@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class HomePage extends StatelessWidget {
   final Widget child;
 
-  const HomePage({Key? key, required this.child}) : super(key: key);
+  const HomePage({super.key, required this.child});
 
   int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).matchedLocation;

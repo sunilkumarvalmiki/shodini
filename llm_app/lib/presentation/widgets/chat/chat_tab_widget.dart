@@ -10,7 +10,7 @@ import 'package:llm_app/data/repositories/chat_repository.dart';
 import 'package:llm_app/presentation/widgets/chat/file_preview_widget.dart';
 
 class ChatTabWidget extends StatefulWidget {
-  const ChatTabWidget({Key? key}) : super(key: key);
+  const ChatTabWidget({super.key});
 
   @override
   State<ChatTabWidget> createState() => _ChatTabWidgetState();
@@ -22,7 +22,7 @@ class _ChatTabWidgetState extends State<ChatTabWidget> {
   final List<ChatMessage> _messages = [];
   final ChatRepository _chatRepository = ChatRepository();
   bool _isLoading = false;
-  String _selectedModel = 'GPT-3.5 Turbo';
+  final String _selectedModel = 'GPT-3.5 Turbo';
   List<AttachedFile> _currentAttachments = [];
   static const int _maxFileSizeBytes = 10 * 1024 * 1024; // 10MB as per PRD
   bool _isLoadingHistory =
@@ -411,7 +411,7 @@ Some things you might want to try:
                                                   decoration: BoxDecoration(
                                                     color: Theme.of(context)
                                                         .colorScheme
-                                                        .background
+                                                        .surface
                                                         .withOpacity(0.5),
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -629,7 +629,7 @@ Some things you might want to try:
                                               ],
                                             ),
                                           );
-                                        }).toList(),
+                                        }),
                                       message.isUserMessage
                                           ? Text(
                                               message.text,
@@ -692,10 +692,10 @@ Some things you might want to try:
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .onSurface,
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .surfaceVariant,
+                                                  backgroundColor: Theme.of(
+                                                          context)
+                                                      .colorScheme
+                                                      .surfaceContainerHighest,
                                                   fontFamily: 'monospace',
                                                 ),
                                                 codeblockPadding:
@@ -790,7 +790,7 @@ Some things you might want to try:
                     child: Container(
                       padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(8.0),
                         border: Border.all(
                           color: Theme.of(context)

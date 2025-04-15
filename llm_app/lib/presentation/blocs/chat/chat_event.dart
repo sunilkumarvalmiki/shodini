@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:llm_app/data/models/chat_message.dart';
 
 abstract class ChatEvent extends Equatable {
   const ChatEvent();

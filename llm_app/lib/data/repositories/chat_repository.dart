@@ -17,9 +17,7 @@ class ChatRepository {
   // Save a message to the repository
   Future<void> saveMessage(ChatMessage message) async {
     // Generate a random ID if not present
-    if (message.id == null) {
-      message.id = DateTime.now().millisecondsSinceEpoch.toString();
-    }
+    message.id ??= DateTime.now().millisecondsSinceEpoch.toString();
 
     // Add to in-memory storage
     _messages.add(message);

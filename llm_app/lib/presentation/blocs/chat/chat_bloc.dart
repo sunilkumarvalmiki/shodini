@@ -69,7 +69,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _visibleStartIndex = 0;
       _visibleEndIndex = messages.length > 10 ? 10 : messages.length;
       
-      emit(ChatLoaded(messages: messages, currentAttachments: []));
+      emit(ChatLoaded(messages: messages, currentAttachments: const []));
     } catch (e) {
       emit(ChatError(message: 'Failed to load chat history: $e'));
       emit(const ChatLoaded(messages: [], currentAttachments: []));
@@ -221,7 +221,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(
         ChatLoaded(
           messages: updatedMessages,
-          currentAttachments: [],
+          currentAttachments: const [],
           isLoading: true,
         ),
       );
@@ -252,7 +252,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(
         ChatLoaded(
           messages: messagesWithBotResponse,
-          currentAttachments: [],
+          currentAttachments: const [],
           isLoading: false,
         ),
       );

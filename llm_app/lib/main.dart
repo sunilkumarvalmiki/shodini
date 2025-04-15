@@ -14,6 +14,7 @@ import 'package:llm_app/core/di/service_locator.dart';
 import 'package:llm_app/core/theme/theme_service.dart';
 import 'package:provider/provider.dart';
 import 'package:llm_app/presentation/pages/splash_screen.dart'; // Import the actual splash screen
+import 'package:llm_app/presentation/widgets/chat/chat_tab_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,12 +34,12 @@ class MyApp extends StatelessWidget {
       value: serviceLocator<ThemeService>(),
       child: Consumer<ThemeService>(
         builder: (context, themeService, _) {
-          return MaterialApp.router(
+          return MaterialApp(
             title: 'Open-Source LLM App',
             theme: themeService.getLightTheme(),
             darkTheme: themeService.getDarkTheme(),
             themeMode: themeService.flutterThemeMode,
-            routerConfig: AppRouter.router,
+            home: const SplashScreen(),
           );
         },
       ),
@@ -46,27 +47,107 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// SplashScreen is now imported from presentation/pages/splash_screen.dart
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-  bool _isDarkMode = false;
-
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize theme mode
-    _isDarkMode =
-        WidgetsBinding.instance.platformDispatcher.platformBrightness ==
-            Brightness.dark;
+
+    // Simulate splash screen duration (3-5 seconds as per PRD)
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const MainAppPage(),
+        ),
+      );
+    });
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // App logo
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.chat_bubble_outline,
+                  size: 60,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            // App name
+            Text(
+              'Open-Source LLM App',
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            // Version number
+            Text(
+              'v1.0.0',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.7),
+                  ),
+            ),
+            const SizedBox(height: 40),
+            // Loading indicator
+            SizedBox(
+              width: 40,
+              height: 40,
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).colorScheme.primary,
+                ),
+                strokeWidth: 3,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MainAppPage extends StatefulWidget {
+  const MainAppPage({super.key});
+
+  @override
+  State<MainAppPage> createState() => _MainAppPageState();
+}
+
+class _MainAppPageState extends State<MainAppPage> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    const ChatTabWidget(),
+    const DocsTab(),
+    const MarketplaceTab(),
+    const ProfileTab(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -74,123 +155,136 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _toggleTheme() {
-    setState(() {
-      _isDarkMode = !_isDarkMode;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      const ChatTab(),
-      _buildDocsTab(),
-      _buildMarketplaceTab(),
-      _buildProfileTab(),
-    ];
-
-    return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      ),
-      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Open-Source LLM App'),
-          actions: [
-            IconButton(
-              icon: Icon(_isDarkMode ? Icons.light_mode : Icons.dark_mode),
-              onPressed: _toggleTheme,
-              tooltip: 'Toggle Theme',
-            ),
-          ],
-        ),
-        body: pages[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'Chat',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.description),
-              label: 'Docs',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: 'Marketplace',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDocsTab() {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.description_outlined, size: 60),
-          SizedBox(height: 16),
-          Text('Documents Tab', style: TextStyle(fontSize: 24)),
-          SizedBox(height: 8),
-          Text('Coming in v2'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Open-Source LLM App'),
+        actions: [
+          IconButton(
+            icon: Icon(Theme.of(context).brightness == Brightness.dark
+                ? Icons.light_mode
+                : Icons.dark_mode),
+            onPressed: () {
+              final themeService =
+                  Provider.of<ThemeService>(context, listen: false);
+              themeService.toggleTheme();
+            },
+            tooltip: 'Toggle Theme',
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildMarketplaceTab() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.shopping_cart_outlined, size: 60),
-          const SizedBox(height: 16),
-          const Text('Marketplace Tab', style: TextStyle(fontSize: 24)),
-          const SizedBox(height: 8),
-          const Text('Discover and select models'),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Browse Models'),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.description),
+            label: 'Docs',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Marketplace',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildProfileTab() {
+class DocsTab extends StatelessWidget {
+  const DocsTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.person_outline, size: 60),
+          Icon(
+            Icons.description,
+            size: 64,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           const SizedBox(height: 16),
-          const Text('Profile Tab', style: TextStyle(fontSize: 24)),
+          Text(
+            'Document Processing',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
           const SizedBox(height: 8),
-          const Text('Account, Appearance, Data Controls, Info'),
+          Text(
+            'Coming in next version',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MarketplaceTab extends StatelessWidget {
+  const MarketplaceTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.shopping_cart,
+            size: 64,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _toggleTheme,
-            child: Text(
-                _isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'),
+          Text(
+            'Model Marketplace',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Discover and select from available models',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.person,
+            size: 64,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Profile',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Account settings and preferences',
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
       ),
@@ -288,7 +382,7 @@ class AttachedFile {
 
 // Chat Tab
 class ChatTab extends StatefulWidget {
-  const ChatTab({Key? key}) : super(key: key);
+  const ChatTab({super.key});
 
   @override
   _ChatTabState createState() => _ChatTabState();
@@ -943,14 +1037,14 @@ class _MessageItem extends StatelessWidget {
   final Widget Function() buildNoPreviewAvailable;
 
   const _MessageItem({
-    Key? key,
+    super.key,
     required this.message,
     required this.formatFileSize,
     required this.buildImagePreview,
     required this.readTextFileContent,
     required this.buildErrorPreview,
     required this.buildNoPreviewAvailable,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -983,8 +1077,7 @@ class _MessageItem extends StatelessWidget {
                   if (message.attachedFiles != null &&
                       message.attachedFiles!.isNotEmpty)
                     ...message.attachedFiles!
-                        .map((file) => _buildAttachmentPreview(file, context))
-                        .toList(),
+                        .map((file) => _buildAttachmentPreview(file, context)),
                   _buildMessageContent(context),
                   const SizedBox(height: 4),
                   Text(
@@ -1051,7 +1144,8 @@ class _MessageItem extends StatelessWidget {
               ),
               code: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
-                backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                backgroundColor:
+                    Theme.of(context).colorScheme.surfaceContainerHighest,
                 fontFamily: 'monospace',
               ),
               codeblockPadding: const EdgeInsets.all(8.0),
@@ -1085,7 +1179,7 @@ class _MessageItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background.withOpacity(0.5),
+              color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Row(
@@ -1230,11 +1324,11 @@ class _AttachmentPreview extends StatelessWidget {
   final String Function(int) formatFileSize;
 
   const _AttachmentPreview({
-    Key? key,
+    super.key,
     required this.file,
     required this.onRemove,
     required this.formatFileSize,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1243,7 +1337,7 @@ class _AttachmentPreview extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
@@ -1342,11 +1436,11 @@ class OptimizedImagePreview extends StatefulWidget {
   final BoxFit fit;
 
   const OptimizedImagePreview({
-    Key? key,
+    super.key,
     required this.file,
     this.maxHeight = 200,
     this.fit = BoxFit.contain,
-  }) : super(key: key);
+  });
 
   @override
   State<OptimizedImagePreview> createState() => _OptimizedImagePreviewState();

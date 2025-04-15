@@ -48,8 +48,8 @@ class AppRouter {
           GoRoute(
             path: kHomeRoute,
             name: 'home',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: const ChatTabWidget(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: ChatTabWidget(),
             ),
             routes: [
               // Individual chat detail route with parameter
@@ -68,8 +68,8 @@ class AppRouter {
           GoRoute(
             path: kDocsRoute,
             name: 'docs',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: const DocsTab(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: DocsTab(),
             ),
           ),
 
@@ -77,8 +77,8 @@ class AppRouter {
           GoRoute(
             path: kMarketplaceRoute,
             name: 'marketplace',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: const MarketplaceTab(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: MarketplaceTab(),
             ),
           ),
 
@@ -86,8 +86,8 @@ class AppRouter {
           GoRoute(
             path: kProfileRoute,
             name: 'profile',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: const ProfileTab(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: ProfileTab(),
             ),
           ),
         ],
@@ -101,7 +101,7 @@ class AppRouter {
 class CustomHomePage extends StatelessWidget {
   final Widget child;
 
-  const CustomHomePage({Key? key, required this.child}) : super(key: key);
+  const CustomHomePage({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +153,7 @@ class CustomHomePage extends StatelessWidget {
 
 // Placeholder classes for unimplemented tabs
 class DocsTab extends StatelessWidget {
-  const DocsTab({Key? key}) : super(key: key);
+  const DocsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +185,7 @@ class DocsTab extends StatelessWidget {
 }
 
 class MarketplaceTab extends StatelessWidget {
-  const MarketplaceTab({Key? key}) : super(key: key);
+  const MarketplaceTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +217,7 @@ class MarketplaceTab extends StatelessWidget {
 }
 
 class ProfileTab extends StatelessWidget {
-  const ProfileTab({Key? key}) : super(key: key);
+  const ProfileTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -251,7 +251,7 @@ class ProfileTab extends StatelessWidget {
 class ChatDetailScreen extends StatelessWidget {
   final String chatId;
 
-  const ChatDetailScreen({Key? key, required this.chatId}) : super(key: key);
+  const ChatDetailScreen({super.key, required this.chatId});
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +263,7 @@ class ChatDetailScreen extends StatelessWidget {
 class ErrorScreen extends StatelessWidget {
   final Exception? error;
 
-  const ErrorScreen({Key? key, this.error}) : super(key: key);
+  const ErrorScreen({super.key, this.error});
 
   @override
   Widget build(BuildContext context) {

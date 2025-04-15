@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:llm_app/data/repositories/chat_repository.dart';
-import 'package:sqflite/sqflite.dart';
-import 'dart:async';
 
 // Commented code removed for now - will be enabled once mockito is added to the project
 
