@@ -1,81 +1,43 @@
 import 'dart:async';
-import 'package:sqflite/sqflite.dart';
-import 'package:flutter/foundation.dart';
+import 'package:llm_app/data/models/chat_message.dart';
 
+/// Simple mock implementation of ChatRepository with in-memory storage
+/// This will be replaced with a proper implementation using SQLite in the future
 class ChatRepository {
-  final _databaseHelper = DatabaseHelper();
+  // In-memory storage for messages
+  final List<ChatMessage> _messages = [];
 
-  // Get count of messages for batched loading
+  // Get all messages (simplified version)
+  Future<List<ChatMessage>> getMessages() async {
+    // Simulate network delay
+    await Future.delayed(const Duration(milliseconds: 300));
+    return List.from(_messages);
+  }
+
+  // Save a message to the repository
+  Future<void> saveMessage(ChatMessage message) async {
+    // Generate a random ID if not present
+    if (message.id == null) {
+      message.id = DateTime.now().millisecondsSinceEpoch.toString();
+    }
+
+    // Add to in-memory storage
+    _messages.add(message);
+
+    // Simulate network delay
+    await Future.delayed(const Duration(milliseconds: 200));
+    return;
+  }
+
+  // Delete all messages
+  Future<void> clearMessages() async {
+    _messages.clear();
+    await Future.delayed(const Duration(milliseconds: 200));
+    return;
+  }
+
+  // Get message count
   Future<int> getMessageCount() async {
-    try {
-      final db = await _databaseHelper.database;
-      final result =
-          await db.rawQuery('SELECT COUNT(*) as count FROM messages');
-      return Sqflite.firstIntValue(result) ?? 0;
-    } catch (e) {
-      print('Error getting message count: $e');
-      return 0;
-    }
-  }
-
-  // Get a batch of messages for efficient loading
-  Future<List<ChatMessage>> getMessageBatch(int offset, int limit) async {
-    try {
-      final db = await _databaseHelper.database;
-
-      // Query messages with pagination
-      final messagesList = await db.query(
-        'messages',
-        orderBy: 'timestamp DESC',
-        limit: limit,
-        offset: offset,
-      );
-
-      if (messagesList.isEmpty) {
-        return [];
-      }
-
-      // Use compute for processing large datasets
-      final messages = await compute(_parseMessages, messagesList);
-
-      // Get message IDs for batch loading attachments
-      final messageIds = messages.map((m) => m.id!).toList();
-
-      // Get attachments for these messages
-      if (messageIds.isNotEmpty) {
-        final attachmentsList = await db.query(
-          'attachments',
-          where:
-              'message_id IN (${List.filled(messageIds.length, '?').join(',')})',
-          whereArgs: messageIds,
-        );
-
-        if (attachmentsList.isNotEmpty) {
-          final attachments = await compute(_parseAttachments, attachmentsList);
-          _addAttachmentsToMessages(messages, attachments);
-        }
-      }
-
-      return messages;
-    } catch (e) {
-      print('Error getting message batch: $e');
-      return [];
-    }
-  }
-
-  void _addAttachmentsToMessages(
-      List<ChatMessage> messages, List<Attachment> attachments) {
-    // Implementation of _addAttachmentsToMessages method
-  }
-
-  List<ChatMessage> _parseMessages(List<Map<String, dynamic>> messagesList) {
-    // Implementation of _parseMessages method
-    return [];
-  }
-
-  List<Attachment> _parseAttachments(
-      List<Map<String, dynamic>> attachmentsList) {
-    // Implementation of _parseAttachments method
-    return [];
+    return _messages.length;
   }
 }

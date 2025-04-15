@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:llm_app/presentation/pages/splash_screen.dart';
+import 'package:llm_app/presentation/pages/home_page.dart';
+import 'package:llm_app/presentation/widgets/chat/chat_tab_widget.dart';
 
 // Top-level routes
 const String kSplashRoute = '/';
@@ -38,7 +41,7 @@ class AppRouter {
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
-          return HomePage(child: child);
+          return CustomHomePage(child: child);
         },
         routes: [
           // Chat tab route
@@ -46,7 +49,7 @@ class AppRouter {
             path: kHomeRoute,
             name: 'home',
             pageBuilder: (context, state) => NoTransitionPage(
-              child: const ChatTab(),
+              child: const ChatTabWidget(),
             ),
             routes: [
               // Individual chat detail route with parameter
@@ -94,21 +97,11 @@ class AppRouter {
   );
 }
 
-// Using placeholder classes for now - these will be replaced by actual implementations
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Implementation will be replaced with actual splash screen
-    return const Scaffold(body: Center(child: Text('Splash Screen')));
-  }
-}
-
-class HomePage extends StatelessWidget {
+// Custom home page wrapper for navigation
+class CustomHomePage extends StatelessWidget {
   final Widget child;
 
-  const HomePage({Key? key, required this.child}) : super(key: key);
+  const CustomHomePage({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -158,23 +151,36 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class ChatTab extends StatelessWidget {
-  const ChatTab({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Implementation will be replaced with actual chat tab
-    return const Scaffold(body: Center(child: Text('Chat Tab')));
-  }
-}
-
+// Placeholder classes for unimplemented tabs
 class DocsTab extends StatelessWidget {
   const DocsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Implementation will be replaced with actual docs tab
-    return const Scaffold(body: Center(child: Text('Docs Tab')));
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.description,
+              size: 64,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Document Processing',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Coming in next version',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -183,8 +189,30 @@ class MarketplaceTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Implementation will be replaced with actual marketplace tab
-    return const Scaffold(body: Center(child: Text('Marketplace Tab')));
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.shopping_cart,
+              size: 64,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Model Marketplace',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Discover and select from available models',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -193,8 +221,30 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Implementation will be replaced with actual profile tab
-    return const Scaffold(body: Center(child: Text('Profile Tab')));
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.person,
+              size: 64,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Profile',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Account settings and preferences',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

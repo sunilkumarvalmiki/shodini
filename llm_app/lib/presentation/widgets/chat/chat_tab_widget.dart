@@ -25,12 +25,35 @@ class _ChatTabWidgetState extends State<ChatTabWidget> {
   String _selectedModel = 'GPT-3.5 Turbo';
   List<AttachedFile> _currentAttachments = [];
   static const int _maxFileSizeBytes = 10 * 1024 * 1024; // 10MB as per PRD
-  bool _isLoadingHistory = true;
+  bool _isLoadingHistory =
+      false; // Initialize to false to prevent loading error
 
   @override
   void initState() {
     super.initState();
-    _loadChatHistory();
+    // Only try to load history if not on web platform
+    if (!kIsWeb) {
+      _loadChatHistory();
+    } else {
+      // Add a welcome message for web
+      _addWelcomeMessage();
+    }
+  }
+
+  void _addWelcomeMessage() {
+    final welcomeMessage = ChatMessage(
+      text: '''# Welcome to Open-Source LLM App
+      
+This is a demo of the chat interface. In the web version, some features like file storage and local database are limited.
+
+Try sending a message to see the simulated AI response!''',
+      isUserMessage: false,
+      timestamp: DateTime.now(),
+    );
+
+    setState(() {
+      _messages.add(welcomeMessage);
+    });
   }
 
   @override
@@ -495,9 +518,9 @@ Some things you might want to try:
                                                       child:
                                                           VisibilityAwareFilePreview(
                                                         file: file,
-                                                        visibilityKey:
-                                                            '${message.id}_$index',
-                                                        showControls: false,
+                                                        onRemove: () =>
+                                                            _removeAttachment(
+                                                                index),
                                                       ),
                                                     ),
                                                   ),
@@ -845,9 +868,7 @@ Some things you might want to try:
                               padding: const EdgeInsets.only(top: 8.0),
                               child: VisibilityAwareFilePreview(
                                 file: _currentAttachments[i],
-                                visibilityKey:
-                                    'current_${_currentAttachments[i].name}_$i',
-                                onDelete: () => _removeAttachment(i),
+                                onRemove: () => _removeAttachment(i),
                               ),
                             ),
                         ],

@@ -13,6 +13,7 @@ import 'package:llm_app/core/router/route_guards.dart';
 import 'package:llm_app/core/di/service_locator.dart';
 import 'package:llm_app/core/theme/theme_service.dart';
 import 'package:provider/provider.dart';
+import 'package:llm_app/presentation/pages/splash_screen.dart'; // Import the actual splash screen
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,90 +46,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    // Simulate splash screen duration (3-5 seconds as per PRD)
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
-        ),
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // App logo
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.chat_bubble_outline,
-                  size: 60,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            // App name
-            Text(
-              'Open-Source LLM App',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            // Version number
-            Text(
-              'v1.0.0',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onBackground
-                        .withOpacity(0.7),
-                  ),
-            ),
-            const SizedBox(height: 40),
-            // Loading indicator
-            SizedBox(
-              width: 40,
-              height: 40,
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Theme.of(context).colorScheme.primary,
-                ),
-                strokeWidth: 3,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// SplashScreen is now imported from presentation/pages/splash_screen.dart
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
