@@ -1,0 +1,55 @@
+
+- don't commit to github until approved by me. prompt me to accpet the commit to github. 
+- always double check before creating an file, don't create duplicate files.
+- "Adapt to existing project architecture while maintaining clean code principles",
+- "Use Flutter 3.x features and Material 3 design",
+- "Implement clean architecture with BLoC pattern",
+- "Follow proper state management principles",
+- "Use proper dependency injection",
+- "Implement proper error handling",
+- "Follow platform-specific design guidelines",
+- "Use proper localization techniques",
+
+- Use proper null safety practices
+- Implement proper error handling with Either type
+- Follow proper naming conventions
+- Use proper widget composition
+- Implement proper routing using GoRouter
+- Use proper form validation
+- Follow proper state management with BLoC
+- Implement proper dependency injection using GetIt
+- Use proper asset management
+- Follow proper testing practices
+
+
+- Keep widgets small and focused
+- Use const constructors when possible
+- Implement proper widget keys
+- Follow proper layout principles
+- Use proper widget lifecycle methods
+- Implement proper error boundaries
+- Use proper performance optimization techniques
+- Follow proper accessibility guidelines
+
+
+// Performance Guidelines
+
+- Use proper image caching
+- Implement proper list view optimization
+- Use proper build methods optimization
+- Follow proper state management patterns
+- Implement proper memory management
+- Use proper platform channels when needed
+- Follow proper compilation optimization techniques
+
+
+// Testing Guidelines
+
+- run all the tests after building / compiling the app and if tests fail then revert all the changes.
+- Write unit tests for business logic
+- Implement widget tests for UI components
+- Use integration tests for feature testing
+- Implement proper mocking strategies
+- Use proper test coverage tools
+- Follow proper test naming conventions
+- Implement proper CI/CD testing
